@@ -2,6 +2,7 @@ package consensus
 
 import (
 	"fmt"
+
 	"github.com/didchain/PBFT/message"
 )
 
@@ -83,7 +84,9 @@ func (s *StateEngine) computePMsg() map[int64]*message.PTuple {
 
 /*
 View-Change Messages
+
 	When a backup i suspects the primary for view v is faulty, it enters view v + 1 and multicasts a
+
 ⟨VIEW-CHANGE, v + 1, h, C, P, Q, i⟩αi message to all replicas. Here h is the sequence number of the latest stable
 checkpoint known to i, C is a set of pairs with the sequence number and digest of each checkpoint stored at i,
 and P and Q are the sets described above. These sets are updated before sending the VIEW-CHANGE message using
@@ -309,7 +312,7 @@ func (s *StateEngine) GetON(newVID int64) (int64, int64, message.OMessage, messa
 			N[i] = &message.PrePrepare{
 				ViewID:     newVID,
 				SequenceID: i,
-				Digest:     nil,
+				Digest:     "",
 			}
 		}
 	}
