@@ -127,7 +127,7 @@ func InitConsensus(
 ) *StateEngine {
 	ch := make(chan *message.ConMessage, MaxStateMsgNO)
 	//p2p := p2pnetwork.NewSimpleP2pLib(id, ch)
-	p2p := p2pnetwork.NewSimP2pLib(totalNodes, sendFunc)
+	p2p := p2pnetwork.NewSimP2pLib(totalNodes, sendFunc, ch)
 	se := &StateEngine{
 		NodeID:          id,
 		CurViewID:       0,
