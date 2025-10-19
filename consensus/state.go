@@ -258,6 +258,10 @@ func (s *StateEngine) InspireConsensus(request *message.Request) error {
 	return nil
 }
 
+func (s *StateEngine) SendMessage(nodeID int64, v interface{}) error {
+	return &s.p2pWire.SendMessage(nodeID, v)
+}
+
 /*
 A backup accepts a pre-Prepare message provided:
 	1. the signatures in the Request and the pre-Prepare message are correct and d is the digest for m ;
