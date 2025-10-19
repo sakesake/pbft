@@ -258,8 +258,8 @@ func (s *StateEngine) InspireConsensus(request *message.Request) error {
 	return nil
 }
 
-func (s *StateEngine) SendMessage(nodeID int64, v interface{}) error {
-	return &s.p2pWire.SendMessage(nodeID, v)
+func (s *StateEngine) SendToNode(nodeID int64, v interface{}) error {
+	return &s.p2pWire.SendToNode(nodeID, v)
 }
 
 /*
