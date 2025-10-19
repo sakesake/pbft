@@ -3,9 +3,10 @@ package consensus
 import (
 	"encoding/json"
 	"fmt"
+	"time"
+
 	"github.com/didchain/PBFT/message"
 	"github.com/didchain/PBFT/p2pnetwork"
-	"time"
 )
 
 type Consensus interface {
@@ -117,9 +118,16 @@ type StateEngine struct {
 	sCache    *VCCache
 }
 
-func InitConsensus(id int64, cChan chan<- *message.RequestRecord, rChan chan<- *message.Reply) *StateEngine {
+func InitConsensus(
+	id int64,
+	cChan chan<- *message.RequestRecord,
+	rChan chan<- *message.Reply,
+	totalNodes int,
+	sendFunc func(msg interface{}),
+) *StateEngine {
 	ch := make(chan *message.ConMessage, MaxStateMsgNO)
-	p2p := p2pnetwork.NewSimpleP2pLib(id, ch)
+	//p2p := p2pnetwork.NewSimpleP2pLib(id, ch)
+	p2p := p2pnetwork.NewSimP2pLib(totalNodes, sendFunc)
 	se := &StateEngine{
 		NodeID:          id,
 		CurViewID:       0,
@@ -277,11 +285,13 @@ func (s *StateEngine) rawRequest(request *message.Request) (err error) {
 }
 
 /*
-
 	Like PRE-PREPAREs, the PREPARE and COMMIT messages sent in the other phases also contain n and v. A replica
+
 only accepts one of these messages provided that it is in view v; that it can verify the authenticity of the message;
 and that n is between a low water mark h and a high water mark H.
+
 	A backup i accepts the PRE-PREPARE message provided (in addition to the conditions above) it has not accepted
+
 a PRE-PREPARE for view v and sequence number n containing a different digest.If a backup i accepts the PRE-PREPARE and
 it has request m in its log, it enters the prepare phase by multicasting a PREPARE message with m’s digest to all other
 replicas; in addition, it adds both the PRE-PREPARE and PREPARE messages to its log.
