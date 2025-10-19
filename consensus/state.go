@@ -259,7 +259,7 @@ func (s *StateEngine) InspireConsensus(request *message.Request) error {
 }
 
 func (s *StateEngine) SendToNode(nodeID int64, v interface{}) error {
-	return &s.p2pWire.SendToNode(nodeID, v)
+	return s.p2pWire.SendToNode(nodeID, v)
 }
 
 /*
