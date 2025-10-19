@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/didchain/PBFT/message"
-	"github.com/didchain/PBFT/p2pnetwork"
+	"github.com/sakesake/PBFT/p2pnetwork"
 )
 
 type Consensus interface {
