@@ -3,10 +3,11 @@ package p2pnetwork
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/didchain/PBFT/message"
 	"io"
 	"net"
 	"time"
+
+	"github.com/sakesake/PBFT/message"
 )
 
 var nodeList = []int64{0, 1, 2, 3}

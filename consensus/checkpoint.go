@@ -2,27 +2,38 @@ package consensus
 
 import (
 	"fmt"
-	"github.com/didchain/PBFT/message"
+
+	"github.com/sakesake/PBFT/message"
 )
 
 /*
 	Generating these proofs after executing every operation would be expensive. Instead, they are generated periodically,
+
 when a Request with a sequence number di- visible by some constant (e.g., 100) is executed. We will refer to the states
 produced by the execution of these re- quests as checkpoints and we will say that a checkpoint with a proof is a stable checkpoint.
 
 	A replica maintains several logical copies of the service state: the last stable checkpoint, zero or more
+
 checkpoints that are not stable, and a current state. Copy-on-write techniques can be used to reduce the space overhead
 to store the extra copies of the state, as discussed in Section 6.3.
+
 	The proof of correctness for a checkpoint is generated as follows. When a replica produces a checkpoint, it
+
 multicasts a message <CHECKPOINT, n, d, i> to the other replicas, where n is the sequence number of the last Request
 whose execution is reflected in the state and d is the digest of the state. Each replica collects checkpoint messages
 in its log until it has 2f + 1 of them for sequence number n with the same digest signed by different replicas
 (including possibly its own such message). These 2f + 1 messages are the proof of correctness for the checkpoint.
+
 	A checkpoint with a proof becomes stable and the replica discards all pre-Prepare, Prepare, and Commit messages
+
 with sequence number less than or equal to n from its log; it also discards all earlier checkpoints and checkpoint messages.
+
 	Computing the proofs is efficient because the digest can be computed using incremental cryptography [1] as
+
 discussed in Section 6.3, and proofs are generated rarely.
+
 	The checkpoint protocol is used to advance the low and high water marks (which limit what messages will be accepted).
+
 The low-water mark h is equal to the sequence number of the last stable checkpoint. The high water mark H = h + k, where
 k is big enough so that replicas do not stall waiting for a checkpoint to become stable. For example, if checkpoints
 are taken every 100 requests, k might be 200.

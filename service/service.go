@@ -3,8 +3,9 @@ package service
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/didchain/PBFT/message"
 	"net"
+
+	"github.com/sakesake/PBFT/message"
 )
 
 /*
@@ -73,11 +74,14 @@ func (s *Service) process(op *message.Request) {
 
 /*
 	Each replica i executes the operation requested by m  after committed-local(m, v, n, i)is true and i’s state
+
 reflects the sequential execution of all requests with lower sequence numbers. This ensures that all non- faulty replicas
 execute requests in the same order as required to provide the safety property. After executing the requested operation,
 replicas send a reply to the client. Replicas discard requests whose timestamp is lower than the timestamp in the last
 reply they sent to the client to guarantee exactly-once semantics.
+
 	We do not rely on ordered message delivery, and therefore it is possible for a replica to commit requests out
+
 of order. This does not matter since it keeps the pre- prepare, prepare, and commit messages logged until the
 corresponding request can be executed.
 */

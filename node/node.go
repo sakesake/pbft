@@ -2,9 +2,10 @@ package node
 
 import (
 	"fmt"
+
 	"github.com/didchain/PBFT/consensus"
-	"github.com/didchain/PBFT/message"
 	"github.com/didchain/PBFT/service"
+	"github.com/sakesake/PBFT/message"
 )
 
 const MaxMsgNO = 100

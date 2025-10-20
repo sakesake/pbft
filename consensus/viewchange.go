@@ -3,7 +3,7 @@ package consensus
 import (
 	"fmt"
 
-	"github.com/didchain/PBFT/message"
+	"github.com/sakesake/PBFT/message"
 )
 
 type VCCache struct {
