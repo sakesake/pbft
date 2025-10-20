@@ -8,7 +8,8 @@ import (
 type ConMessage struct {
 	Typ     MType  `json:"type"`
 	Sig     string `json:"sig"`
-	From    string `json:"from"`
+	From    uint   `json:"from"`
+	To      uint   `json:"to"`
 	Payload []byte `json:"payload"`
 }
 
