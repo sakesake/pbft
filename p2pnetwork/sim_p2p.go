@@ -37,10 +37,13 @@ func (sp *SimulationP2P) BroadCast(v interface{}) error {
 }
 
 func (sp *SimulationP2P) SendToNode(nodeID int64, v interface{}) error {
-	//TODO:: single point message
 	for i := 0; i < sp.TotalNodes; i++ {
 		if i == int(nodeID) {
-			sp.Send(v, sp.MsgChan)
+			conMsg, ok := v.(*message.ConMessage)
+			if !ok {
+				return fmt.Errorf("SendToNode: expected *message.ConMessage, got %T", v)
+			}
+			sp.MsgChan <- conMsg
 			return nil
 		}
 	}
