@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/didchain/!p!b!f!t/message"
 	"github.com/sakesake/PBFT/message"
 	"github.com/sakesake/PBFT/p2pnetwork"
 )
