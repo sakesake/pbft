@@ -248,7 +248,7 @@ func (s *StateEngine) InspireConsensus(request *message.Request) error {
 	}
 
 	log := s.getOrCreateLog(newSeq)
-	log.PrePrepare = ppMsg
+	//log.PrePrepare = ppMsg
 	log.clientID = request.ClientID
 	cMsg = message.CreateConMsg(message.MTPrePrepare, ppMsg)
 	if err := s.p2pWire.BroadCast(cMsg); err != nil {
