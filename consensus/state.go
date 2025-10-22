@@ -342,7 +342,7 @@ func (s *StateEngine) idle2PrePrepare(ppMsg *message.PrePrepare) (err error) {
 	log.PrePrepare = ppMsg
 	log.Prepare[s.NodeID] = prepare
 	log.Stage = PrePrepared
-	fmt.Printf("======>[idle2PrePrepare] Consensus status is [%s] seq=%d\n", log.Stage, ppMsg.SequenceID)
+	fmt.Printf("======>[idle2PrePrepare] Node: %d, Consensus status is [%s] seq=%d\n", s.NodeID, log.Stage, ppMsg.SequenceID)
 	return nil
 }
 
@@ -362,7 +362,7 @@ are correct, their view number equals the replica’s current view, and their se
 
 func (s *StateEngine) prePrepare2Prepare(prepare *message.Prepare) (err error) {
 
-	fmt.Printf("======>[prePrepare2Prepare]Current sequence[%d]\n", prepare.SequenceID)
+	fmt.Printf("======>[prePrepare2Prepare]Node: %d, Current sequence[%d]\n", s.NodeID, prepare.SequenceID)
 
 	//TODO::signature check
 	//fmt.Printf("Verify Prepare message digest:%s\n", Prepare.Digest)
@@ -398,7 +398,7 @@ func (s *StateEngine) prePrepare2Prepare(prepare *message.Prepare) (err error) {
 		return nil
 	}
 
-	fmt.Printf("======>[prePrepare2Prepare] Consensus status is [%s] seq=%d\n", log.Stage, prepare.SequenceID)
+	fmt.Printf("======>[prePrepare2Prepare] Node: %d, Consensus status is [%s] seq=%d\n", s.NodeID, log.Stage, prepare.SequenceID)
 
 	commit := &message.Commit{
 		ViewID:     s.CurViewID,
