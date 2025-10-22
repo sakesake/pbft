@@ -237,6 +237,8 @@ func (s *StateEngine) InspireConsensus(request *message.Request) error {
 	}
 	client.saveRequest(request)
 	cMsg := message.CreateConMsg(message.MTRequest, request)
+	cMsg.From = s.NodeID
+
 	if err := s.p2pWire.BroadCast(cMsg); err != nil {
 		return err
 	}
@@ -251,6 +253,8 @@ func (s *StateEngine) InspireConsensus(request *message.Request) error {
 	//log.PrePrepare = ppMsg
 	log.clientID = request.ClientID
 	cMsg = message.CreateConMsg(message.MTPrePrepare, ppMsg)
+	cMsg.From = s.NodeID
+
 	if err := s.p2pWire.BroadCast(cMsg); err != nil {
 		return err
 	}
@@ -336,6 +340,8 @@ func (s *StateEngine) idle2PrePrepare(ppMsg *message.PrePrepare) (err error) {
 		NodeID:     s.NodeID,
 	}
 	cMsg := message.CreateConMsg(message.MTPrepare, ppMsg)
+	cMsg.From = s.NodeID
+
 	if err := s.p2pWire.BroadCast(cMsg); err != nil {
 		return err
 	}
@@ -407,6 +413,8 @@ func (s *StateEngine) prePrepare2Prepare(prepare *message.Prepare) (err error) {
 		NodeID:     s.NodeID,
 	}
 	cMsg := message.CreateConMsg(message.MTCommit, commit)
+	cMsg.From = s.NodeID
+
 	if err := s.p2pWire.BroadCast(cMsg); err != nil {
 		return err
 	}
