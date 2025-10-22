@@ -303,7 +303,7 @@ replicas; in addition, it adds both the PRE-PREPARE and PREPARE messages to its 
 */
 func (s *StateEngine) idle2PrePrepare(ppMsg *message.PrePrepare) (err error) {
 
-	fmt.Printf("======>[idle2PrePrepare]Current sequence[%d]\n", ppMsg.SequenceID)
+	fmt.Printf("======>[idle2PrePrepare]Node: %d Current sequence[%d]\n", s.NodeID, ppMsg.SequenceID)
 
 	//TODO:: check signature of of pre-Prepare message
 	//TODO:: check digest of pre-Prepare message
@@ -451,15 +451,15 @@ func (s *StateEngine) prepare2Commit(commit *message.Commit) (err error) {
 
 	log, ok := s.msgLogs[commit.SequenceID]
 	if !ok {
-		return fmt.Errorf("======>[prePrepare2Prepare]:=>havn't got log for message(%d) yet", commit.SequenceID)
+		return fmt.Errorf("======>[prepare2Commit]:=>havn't got log for message(%d) yet", commit.SequenceID)
 	}
 	if log.Stage != Prepared {
-		return fmt.Errorf("======>[prePrepare2Prepare] current[seq=%d] state isn't PrePrepared:[%s]\n", commit.SequenceID, log.Stage)
+		return fmt.Errorf("======>[prepare2Commit] current[seq=%d] state isn't PrePrepared:[%s]\n", commit.SequenceID, log.Stage)
 	}
 
 	ppMsg := log.PrePrepare
 	if ppMsg == nil {
-		return fmt.Errorf("======>[prePrepare2Prepare]:=>havn't got pre-Prepare message(%d) yet", commit.SequenceID)
+		return fmt.Errorf("======>[prepare2Commit]:=>havn't got pre-Prepare message(%d) yet", commit.SequenceID)
 	}
 
 	if ppMsg.ViewID != commit.ViewID ||
@@ -509,19 +509,19 @@ func (s *StateEngine) procConsensusMsg(msg *message.ConMessage) (err error) {
 		}
 		return s.idle2PrePrepare(prePrepare)
 
-	case message.MTPrepare:
-		prepare := &message.Prepare{}
-		if err := json.Unmarshal(msg.Payload, prepare); err != nil {
-			return fmt.Errorf("======>[procConsensusMsg]invalid[%s] Prepare message[%s]\n", err, msg)
-		}
-		return s.prePrepare2Prepare(prepare)
+		/*case message.MTPrepare:
+			prepare := &message.Prepare{}
+			if err := json.Unmarshal(msg.Payload, prepare); err != nil {
+				return fmt.Errorf("======>[procConsensusMsg]invalid[%s] Prepare message[%s]\n", err, msg)
+			}
+			return s.prePrepare2Prepare(prepare)
 
-	case message.MTCommit:
-		commit := &message.Commit{}
-		if err := json.Unmarshal(msg.Payload, commit); err != nil {
-			return fmt.Errorf("======>[procConsensusMsg] invalid[%s] Commit message[%s]\n", err, msg)
-		}
-		return s.prepare2Commit(commit)
+		case message.MTCommit:
+			commit := &message.Commit{}
+			if err := json.Unmarshal(msg.Payload, commit); err != nil {
+				return fmt.Errorf("======>[procConsensusMsg] invalid[%s] Commit message[%s]\n", err, msg)
+			}
+			return s.prepare2Commit(commit)*/
 	}
 	return
 }
