@@ -395,7 +395,7 @@ func (s *StateEngine) prePrepare2Prepare(prepare *message.Prepare) (err error) {
 	}
 	log.Prepare[prepare.NodeID] = prepare
 	if len(log.Prepare) < 2*message.MaxFaultyNode { //not different replica, just simple no
-		fmt.Printf("======>[prePrepare2Prepare] Node: %d, Not enough votes: %d less than %d", s.NodeID, len(log.Prepare), 2*message.MaxFaultyNode)
+		//fmt.Printf("======>[prePrepare2Prepare] Node: %d, Not enough votes: %d less than %d", s.NodeID, len(log.Prepare), 2*message.MaxFaultyNode)
 		return nil
 	}
 
