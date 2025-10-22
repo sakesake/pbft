@@ -253,7 +253,7 @@ func (s *StateEngine) InspireConsensus(request *message.Request) error {
 	if err := s.p2pWire.BroadCast(cMsg); err != nil {
 		return err
 	}
-	log.Stage = PrePrepared
+	//log.Stage = PrePrepared
 	fmt.Printf("======>[Primary]Consensus broadcast message(%d)\n", newSeq)
 	return nil
 }
