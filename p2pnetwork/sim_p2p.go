@@ -25,18 +25,20 @@ func NewSimP2pLib(
 }
 
 func (sp *SimulationP2P) BroadCast(v interface{}) error {
-	for i := 0; i < sp.TotalNodes; i++ {
-		// launch a goroutine for each send
-		go func(to uint) {
-			conMsg, _ := v.(*message.ConMessage)
-			// TODO: extract before go routine, and check ok
-			//if !ok {
-			//return fmt.Errorf("SendToNode: expected *message.ConMessage, got %T", v)
-			//}
+	conMsg, ok := v.(*message.ConMessage)
+	if !ok {
+		return fmt.Errorf("BroadCast: expected *message.ConMessage, got %T", v)
+	}
 
-			conMsg.To = to
-			sp.Send(conMsg)
-		}(uint(i))
+	for i := 0; i < sp.TotalNodes; i++ {
+		to := uint(i)
+		// Copy the message so each goroutine gets its own copy
+		msgCopy := *conMsg
+		msgCopy.To = to
+
+		go func(m message.ConMessage) {
+			sp.Send(&m)
+		}(msgCopy)
 	}
 
 	return nil
