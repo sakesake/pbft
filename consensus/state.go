@@ -173,7 +173,7 @@ func (s *StateEngine) StartConsensus(sig chan interface{}) {
 					continue
 				}
 				if err := s.procConsensusMsg(conMsg); err != nil {
-					fmt.Print("\n[Node %d] consensus error: %v\n", s.NodeID, err)
+					fmt.Printf("[Node %d] consensus error: %v\n", s.NodeID, err)
 				}
 			case message.MTCheckpoint,
 				message.MTViewChange,
