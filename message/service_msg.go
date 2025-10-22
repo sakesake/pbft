@@ -31,6 +31,9 @@ func (mt MType) String() string {
 	case MTPrePrepare:
 		return "PrePrepare"
 
+	case MTRequest:
+		return "Request"
+
 	case MTPrepare:
 		return "Prepare"
 
@@ -39,6 +42,12 @@ func (mt MType) String() string {
 
 	case MTCheckpoint:
 		return "Checkpoint"
+
+	case MTViewChange:
+		return "ViewChange"
+
+	case MTNewView:
+		return "NewView"
 	}
 	return "Unknown"
 }
