@@ -7,14 +7,14 @@ import (
 )
 
 type SimulationP2P struct {
-	Send       func(msg interface{}, msgChan chan<- *message.ConMessage)
+	Send       func(msg interface{})
 	MsgChan    chan<- *message.ConMessage
 	TotalNodes int
 }
 
 func NewSimP2pLib(
 	totalNodes int,
-	sendFunc func(msg interface{}, msgChan chan<- *message.ConMessage),
+	sendFunc func(msg interface{}),
 	msgChan chan<- *message.ConMessage,
 ) P2pNetwork {
 	return &SimulationP2P{
@@ -29,7 +29,7 @@ func (sp *SimulationP2P) BroadCast(v interface{}) error {
 
 		// launch a goroutine for each send
 		go func(to int) {
-			sp.Send(v, sp.MsgChan)
+			sp.Send(v)
 		}(i)
 	}
 

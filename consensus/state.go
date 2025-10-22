@@ -123,7 +123,7 @@ func InitConsensus(
 	cChan chan<- *message.RequestRecord,
 	rChan chan<- *message.Reply,
 	totalNodes int,
-	sendFunc func(msg interface{}, msgChan chan<- *message.ConMessage),
+	sendFunc func(msg interface{}),
 ) *StateEngine {
 	ch := make(chan *message.ConMessage, MaxStateMsgNO)
 	//p2p := p2pnetwork.NewSimpleP2pLib(id, ch)
