@@ -522,6 +522,7 @@ func (s *StateEngine) procConsensusMsg(msg *message.ConMessage) (err error) {
 
 	case message.MTPrepare:
 		prepare := &message.Prepare{}
+		fmt.Printf("Prepare received - From: %d, To: %d\n", msg.From, msg.To)
 		if err := json.Unmarshal(msg.Payload, prepare); err != nil {
 			return fmt.Errorf("======>[procConsensusMsg]invalid[%s] Prepare message[%s]\n", err, msg)
 		}
