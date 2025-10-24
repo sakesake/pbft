@@ -404,8 +404,6 @@ func (s *StateEngine) prePrepare2Prepare(prepare *message.Prepare) (err error) {
 		return nil
 	}
 
-	fmt.Printf("======>[prePrepare2Prepare] Node: %d, Consensus status is [%s] seq=%d\n", s.NodeID, log.Stage, prepare.SequenceID)
-
 	commit := &message.Commit{
 		ViewID:     s.CurViewID,
 		SequenceID: prepare.SequenceID,
@@ -420,6 +418,8 @@ func (s *StateEngine) prePrepare2Prepare(prepare *message.Prepare) (err error) {
 	}
 	log.Commit[s.NodeID] = commit
 	log.Stage = Prepared
+
+	fmt.Printf("======>[prePrepare2Prepare] Node: %d, Consensus status is [%s] seq=%d\n", s.NodeID, log.Stage, prepare.SequenceID)
 	return
 }
 
@@ -517,19 +517,19 @@ func (s *StateEngine) procConsensusMsg(msg *message.ConMessage) (err error) {
 		}
 		return s.idle2PrePrepare(prePrepare)
 
-		/*case message.MTPrepare:
-			prepare := &message.Prepare{}
-			if err := json.Unmarshal(msg.Payload, prepare); err != nil {
-				return fmt.Errorf("======>[procConsensusMsg]invalid[%s] Prepare message[%s]\n", err, msg)
-			}
-			return s.prePrepare2Prepare(prepare)
+	case message.MTPrepare:
+		prepare := &message.Prepare{}
+		if err := json.Unmarshal(msg.Payload, prepare); err != nil {
+			return fmt.Errorf("======>[procConsensusMsg]invalid[%s] Prepare message[%s]\n", err, msg)
+		}
+		return s.prePrepare2Prepare(prepare)
 
-		case message.MTCommit:
-			commit := &message.Commit{}
-			if err := json.Unmarshal(msg.Payload, commit); err != nil {
-				return fmt.Errorf("======>[procConsensusMsg] invalid[%s] Commit message[%s]\n", err, msg)
-			}
-			return s.prepare2Commit(commit)*/
+		/*case message.MTCommit:
+		commit := &message.Commit{}
+		if err := json.Unmarshal(msg.Payload, commit); err != nil {
+			return fmt.Errorf("======>[procConsensusMsg] invalid[%s] Commit message[%s]\n", err, msg)
+		}
+		return s.prepare2Commit(commit)*/
 	}
 	return
 }
