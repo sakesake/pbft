@@ -368,7 +368,7 @@ are correct, their view number equals the replica’s current view, and their se
 
 func (s *StateEngine) prePrepare2Prepare(prepare *message.Prepare) (err error) {
 
-	fmt.Printf("======>[prePrepare2Prepare]Node: %d, Current sequence[%d]\n", s.NodeID, prepare.SequenceID)
+	fmt.Printf("======>[prePrepare2Prepare]Node: %d, Current sequence[%d], From: %d\n", s.NodeID, prepare.SequenceID, prepare.NodeID)
 
 	//TODO::signature check
 	//fmt.Printf("Verify Prepare message digest:%s\n", Prepare.Digest)
@@ -400,9 +400,9 @@ func (s *StateEngine) prePrepare2Prepare(prepare *message.Prepare) (err error) {
 	}
 	log.Prepare[prepare.NodeID] = prepare
 	if len(log.Prepare) < 2*message.MaxFaultyNode { //not different replica, just simple no
-		fmt.Printf("======>[prePrepare2Prepare] Node: %d, Not enough votes: %d less than %d", s.NodeID, len(log.Prepare), 2*message.MaxFaultyNode)
+		fmt.Printf("======>[prePrepare2Prepare] Node: %d, Not enough votes: %d less than %d\n", s.NodeID, len(log.Prepare), 2*message.MaxFaultyNode)
 		for k, _ := range log.Prepare {
-			fmt.Printf("======>[prePrepare2Prepare] Node: %d, Prepare vote node id: %d", s.NodeID, k)
+			fmt.Printf("======>[prePrepare2Prepare] Node: %d, Prepare vote node id: %d\n", s.NodeID, k)
 		}
 		return nil
 	}
