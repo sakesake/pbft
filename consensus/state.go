@@ -339,7 +339,7 @@ func (s *StateEngine) idle2PrePrepare(ppMsg *message.PrePrepare) (err error) {
 		Digest:     ppMsg.Digest,
 		NodeID:     s.NodeID,
 	}
-	cMsg := message.CreateConMsg(message.MTPrepare, ppMsg)
+	cMsg := message.CreateConMsg(message.MTPrepare, prepare)
 	cMsg.From = uint(s.NodeID)
 
 	if err := s.p2pWire.BroadCast(cMsg); err != nil {
