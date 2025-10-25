@@ -81,7 +81,7 @@ func (s *StateEngine) createCheckPoint(sequence int64) {
 	s.checks[sequence] = cp
 
 	fmt.Printf("======>[createCheckPoint] Broadcast check point message<%d, %d>\n", s.NodeID, sequence)
-	consMsg := message.CreateConMsg(message.MTCommit, msg)
+	consMsg := message.CreateConMsg(message.MTCheckpoint, msg)
 	err := s.p2pWire.BroadCast(consMsg)
 	if err != nil {
 		fmt.Println(err)
