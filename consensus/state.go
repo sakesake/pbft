@@ -541,12 +541,12 @@ func (s *StateEngine) procConsensusMsg(msg *message.ConMessage) (err error) {
 		}
 		return s.prePrepare2Prepare(prepare)
 
-		/*case message.MTCommit:
+	case message.MTCommit:
 		commit := &message.Commit{}
 		if err := json.Unmarshal(msg.Payload, commit); err != nil {
 			return fmt.Errorf("======>[procConsensusMsg] invalid[%s] Commit message[%s]\n", err, msg)
 		}
-		return s.prepare2Commit(commit)*/
+		return s.prepare2Commit(commit)
 	}
 	return
 }
