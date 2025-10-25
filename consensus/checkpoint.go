@@ -60,7 +60,7 @@ func (s *StateEngine) ResetState(reply *message.Reply) {
 	s.msgLogs[reply.SeqID].Stage = Idle
 	s.LasExeSeq = reply.SeqID
 
-	if s.CurSequence%CheckPointInterval == 0 {
+	if s.CurSequence%CheckPointInterval == 0 || s.lastCP == nil {
 		fmt.Printf("======>[ResetState]Need to create check points(%d)\n", s.CurSequence)
 		go s.createCheckPoint(s.CurSequence)
 	}
