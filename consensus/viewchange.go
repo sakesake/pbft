@@ -72,6 +72,8 @@ func (s *StateEngine) computePMsg() map[int64]*message.PTuple {
 			continue
 		}
 
+		fmt.Printf("[computePMsg] Seq: %d, log.Prepare len: %d\n", seq, len(log.Prepare))
+
 		tuple := &message.PTuple{
 			PPMsg: log.PrePrepare,
 			PMsg:  log.Prepare,
