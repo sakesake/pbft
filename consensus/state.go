@@ -453,7 +453,7 @@ corresponding Request can be executed.
 */
 
 func (s *StateEngine) prepare2Commit(commit *message.Commit) (err error) {
-	fmt.Printf("======>[prepare2Commit] Current sequence[%d]\n", commit.SequenceID)
+	fmt.Printf("======>[prepare2Commit] Node: %d, Current sequence[%d]\n", s.NodeID, commit.SequenceID)
 
 	//TODO:: Commit is properly signed
 	//fmt.Printf("Verify Commit message digest:%s\n", Commit.Digest)
@@ -468,19 +468,19 @@ func (s *StateEngine) prepare2Commit(commit *message.Commit) (err error) {
 
 	log, ok := s.msgLogs[commit.SequenceID]
 	if !ok {
-		return fmt.Errorf("======>[prepare2Commit]:=>havn't got log for message(%d) yet", commit.SequenceID)
+		return fmt.Errorf("======>[prepare2Commit]: Node: %d =>havn't got log for message(%d) yet", s.NodeID, commit.SequenceID)
 	}
 
 	// buffer commit messages
 	log.Commit[commit.NodeID] = commit
 
 	if log.Stage != Prepared {
-		return fmt.Errorf("======>[prepare2Commit] current[seq=%d] state isn't PrePrepared:[%s]\n", commit.SequenceID, log.Stage)
+		return fmt.Errorf("======>[prepare2Commit] Node: %d, current[seq=%d] state isn't PrePrepared:[%s]\n", s.NodeID, commit.SequenceID, log.Stage)
 	}
 
 	ppMsg := log.PrePrepare
 	if ppMsg == nil {
-		return fmt.Errorf("======>[prepare2Commit]:=>havn't got pre-Prepare message(%d) yet", commit.SequenceID)
+		return fmt.Errorf("======>[prepare2Commit]: Node: %d =>havn't got pre-Prepare message(%d) yet", s.NodeID, commit.SequenceID)
 	}
 
 	for nodeID, commitLog := range log.Commit {
@@ -497,7 +497,7 @@ func (s *StateEngine) prepare2Commit(commit *message.Commit) (err error) {
 	}
 	log.Stage = Committed
 	s.Timer.tack()
-	fmt.Printf("======>[prepare2Commit] Consensus status is [%s] seq=%d and timer stop\n", log.Stage, commit.SequenceID)
+	fmt.Printf("======>[prepare2Commit] Node: %d, Consensus status is [%s] seq=%d and timer stop\n", s.NodeID, log.Stage, commit.SequenceID)
 
 	//TODO::should execute request with smallest  sequence no, current committed sequence may not be the smallest one.
 	request, ok := s.cliRecord[log.clientID].Request[commit.SequenceID]
