@@ -384,6 +384,9 @@ func (s *StateEngine) prePrepare2Prepare(prepare *message.Prepare) (err error) {
 	if !ok {
 		return fmt.Errorf("======>[prePrepare2Prepare]:=>havn't got log for message(%d) yet", prepare.SequenceID)
 	}
+
+	log.Prepare[prepare.NodeID] = prepare
+
 	if log.Stage != PrePrepared {
 		return fmt.Errorf("======>[prePrepare2Prepare] current[seq=%d] state isn't PrePrepared:[%s]\n", prepare.SequenceID, log.Stage)
 	}
@@ -393,12 +396,15 @@ func (s *StateEngine) prePrepare2Prepare(prepare *message.Prepare) (err error) {
 		return fmt.Errorf("======>[prePrepare2Prepare]:=>havn't got pre-Prepare message(%d) yet", prepare.SequenceID)
 	}
 
-	if ppMsg.ViewID != prepare.ViewID ||
-		ppMsg.SequenceID != prepare.SequenceID ||
-		ppMsg.Digest != prepare.Digest {
-		return fmt.Errorf("[Prepare]:=>not same with pre-Prepare message")
+	for nodeID, prepareLog := range log.Prepare {
+		if ppMsg.ViewID != prepareLog.ViewID ||
+			ppMsg.SequenceID != prepareLog.SequenceID ||
+			ppMsg.Digest != prepareLog.Digest {
+			delete(log.Prepare, nodeID)
+			fmt.Printf("[Prepare]:=>not same with pre-Prepare message. Node: {%d}", s.NodeID)
+		}
 	}
-	log.Prepare[prepare.NodeID] = prepare
+
 	if len(log.Prepare) < 2*message.MaxFaultyNode { //not different replica, just simple no
 		fmt.Printf("======>[prePrepare2Prepare] Node: %d, Not enough votes: %d less than %d\n", s.NodeID, len(log.Prepare), 2*message.MaxFaultyNode)
 		for k, _ := range log.Prepare {
@@ -464,6 +470,10 @@ func (s *StateEngine) prepare2Commit(commit *message.Commit) (err error) {
 	if !ok {
 		return fmt.Errorf("======>[prepare2Commit]:=>havn't got log for message(%d) yet", commit.SequenceID)
 	}
+
+	// buffer commit messages
+	log.Commit[commit.NodeID] = commit
+
 	if log.Stage != Prepared {
 		return fmt.Errorf("======>[prepare2Commit] current[seq=%d] state isn't PrePrepared:[%s]\n", commit.SequenceID, log.Stage)
 	}
@@ -473,12 +483,15 @@ func (s *StateEngine) prepare2Commit(commit *message.Commit) (err error) {
 		return fmt.Errorf("======>[prepare2Commit]:=>havn't got pre-Prepare message(%d) yet", commit.SequenceID)
 	}
 
-	if ppMsg.ViewID != commit.ViewID ||
-		ppMsg.SequenceID != commit.SequenceID ||
-		ppMsg.Digest != commit.Digest {
-		return fmt.Errorf("[Prepare]:=>not same with pre-Prepare message")
+	for nodeID, commitLog := range log.Commit {
+		if ppMsg.ViewID != commitLog.ViewID ||
+			ppMsg.SequenceID != commitLog.SequenceID ||
+			ppMsg.Digest != commitLog.Digest {
+			delete(log.Commit, nodeID)
+			fmt.Printf("[Commit]:=>not same with pre-Prepare message. Node: {%d}", s.NodeID)
+		}
 	}
-	log.Commit[commit.NodeID] = commit
+
 	if len(log.Commit) < 2*message.MaxFaultyNode+1 {
 		return nil
 	}
