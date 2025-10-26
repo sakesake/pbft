@@ -208,6 +208,8 @@ func (s *StateEngine) checkViewChange(vc *message.ViewChange) error {
 				return fmt.Errorf("view change message checking seq id[%d] in pre-prepare"+
 					"is different from prepare's[%d]", seq, prepare.SequenceID)
 			}
+
+			fmt.Printf("[checkViewChange] View id: %d, node id: %d\n", ppView, nid)
 			counter[ppView].put(nid)
 		}
 	}
