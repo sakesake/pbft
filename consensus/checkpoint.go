@@ -57,7 +57,7 @@ func NewCheckPoint(sq, vi int64) *CheckPoint {
 }
 
 func (s *StateEngine) ResetState(reply *message.Reply) {
-	s.msgLogs[reply.SeqID].Stage = Idle
+	//s.msgLogs[reply.SeqID].Stage = Idle
 	s.LasExeSeq = reply.SeqID
 
 	if s.CurSequence%CheckPointInterval == 0 || s.lastCP == nil {
