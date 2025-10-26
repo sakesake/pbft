@@ -107,7 +107,7 @@ or CHECKPOINT messages.
 */
 func (s *StateEngine) ViewChange() {
 
-	fmt.Printf("======>[ViewChange] (%d, %d).....\n", s.CurViewID, s.lastCP.Seq)
+	fmt.Printf("======>[ViewChange] Node: %d (%d, %d).....\n", s.NodeID, s.CurViewID, s.lastCP.Seq)
 	s.nodeStatus = ViewChanging
 	s.Timer.tack()
 

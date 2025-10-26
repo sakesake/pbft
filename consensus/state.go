@@ -517,6 +517,9 @@ func (s *StateEngine) prepare2Commit(commit *message.Commit) (err error) {
 		}
 		//TODO::Check the reply whose sequence is smaller than current sequence.
 		s.nodeChan <- exeParam
+	} else if s.nodeStatus == ViewChanging {
+		fmt.Printf("======>[prepare2Commit] Node: %d, View changing commit done.\n", s.NodeID)
+		s.nodeStatus = Serving
 	}
 
 	return
