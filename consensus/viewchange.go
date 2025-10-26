@@ -70,7 +70,7 @@ func (s *StateEngine) computePMsg() map[int64]*message.PTuple {
 	fmt.Printf("[computePMsg]Number of keys in s.msgLogs:%d\n", len(s.msgLogs))
 
 	for k, v := range s.msgLogs {
-		fmt.Printf("[computePMsg] Seq: %d, Stage: %s, prePrepare len: %d, prepare len: %d\n", k, v.Stage.String(), len(v.PrePrepare), len(v.PrePrepare))
+		fmt.Printf("[computePMsg] Seq: %d, Stage: %s, prepare len: %d\n", k, v.Stage.String(), len(v.Prepare))
 	}
 
 	for seq := s.MiniSeq; seq < s.MaxSeq; seq++ {
