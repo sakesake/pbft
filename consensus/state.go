@@ -38,7 +38,7 @@ func (s Stage) String() string {
 	return "Unknown"
 }
 
-const StateTimerOut = 5 * time.Second
+const StateTimerOut = 15 * time.Second
 const MaxStateMsgNO = 100
 const CheckPointInterval = 1 << 5          //32
 const CheckPointK = 2 * CheckPointInterval //64
