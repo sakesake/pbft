@@ -437,9 +437,13 @@ func (s *StateEngine) didChangeView(nv *message.NewView) error {
 		}
 	}
 
+	fmt.Printf("[didChangeView] Node: %d AFTER idle2PrePrepare.\n", s.NodeID)
+
 	s.sCache.addNewView(nv)
 	s.CurSequence = newSeq
 	s.updateStateNV(newCP, cpVC)
 	s.cleanRequest()
+
+	fmt.Printf("[didChangeView] Node: %d FINISHED.\n", s.NodeID)
 	return nil
 }

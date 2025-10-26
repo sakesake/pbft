@@ -164,8 +164,7 @@ func (s *StateEngine) StartConsensus(sig chan interface{}) {
 		case conMsg := <-s.MsgChan:
 			switch conMsg.Typ {
 			case message.MTRequest,
-				message.MTPrePrepare,
-				message.MTCommit:
+				message.MTPrePrepare:
 				if s.nodeStatus != Serving {
 					fmt.Printf("[Node %d] node is not in service status now. Status: %s\n", s.NodeID, s.nodeStatus.String())
 					continue
@@ -173,7 +172,8 @@ func (s *StateEngine) StartConsensus(sig chan interface{}) {
 				if err := s.procConsensusMsg(conMsg); err != nil {
 					fmt.Printf("[Node %d] consensus error: %v\n", s.NodeID, err)
 				}
-			case message.MTPrepare:
+			case message.MTPrepare,
+				message.MTCommit:
 				if s.nodeStatus != Serving && s.nodeStatus != ViewChanging {
 					fmt.Printf("[Node %d] node is not in service or view changing status now. Status: %s\n", s.NodeID, s.nodeStatus.String())
 					continue
