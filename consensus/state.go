@@ -168,7 +168,7 @@ func (s *StateEngine) StartConsensus(sig chan interface{}) {
 				message.MTPrepare,
 				message.MTCommit:
 				if s.nodeStatus != Serving {
-					fmt.Println("node is not in service status now......")
+					fmt.Println("[Node %d] node is not in service status now. Status: %s\n", s.nodeStatus.String())
 					continue
 				}
 				if err := s.procConsensusMsg(conMsg); err != nil {

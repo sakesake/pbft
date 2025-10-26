@@ -412,7 +412,7 @@ func (s *StateEngine) cleanRequest() {
 }
 
 func (s *StateEngine) didChangeView(nv *message.NewView) error {
-
+	fmt.Printf("[didChangeView] Node: %d NewView message received.\n", s.NodeID)
 	newVID := nv.NewViewID
 	s.sCache.vcMsg = nv.VMsg
 	newCP, newSeq, O, N, cpVC := s.GetON(newVID)
@@ -423,12 +423,14 @@ func (s *StateEngine) didChangeView(nv *message.NewView) error {
 		return fmt.Errorf("new view checking N message faliled")
 	}
 
+	fmt.Printf("[didChangeView] Node: %d idle2PrePrepare O.\n", s.NodeID)
 	for _, ppMsg := range O {
 		if e := s.idle2PrePrepare(ppMsg); e != nil {
 			return e
 		}
 	}
 
+	fmt.Printf("[didChangeView] Node: %d idle2PrePrepare N.\n", s.NodeID)
 	for _, ppMsg := range N {
 		if e := s.idle2PrePrepare(ppMsg); e != nil {
 			return e
