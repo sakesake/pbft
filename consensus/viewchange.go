@@ -217,6 +217,9 @@ func (s *StateEngine) checkViewChange(vc *message.ViewChange) error {
 			}
 
 			fmt.Printf("[checkViewChange] View id: %d, node id: %d\n", ppView, nid)
+			if counter[ppView] == nil {
+				counter[ppView] = make(Set)
+			}
 			counter[ppView].put(nid)
 		}
 	}
