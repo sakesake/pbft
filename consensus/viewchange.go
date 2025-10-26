@@ -66,6 +66,9 @@ with digest d with number n in view v and that request did not pre-prepare at i 
 
 func (s *StateEngine) computePMsg() map[int64]*message.PTuple {
 	P := make(map[int64]*message.PTuple)
+
+	fmt.Printf("[computePMsg]Number of keys in s.msgLogs:%d\n", len(s.msgLogs))
+
 	for seq := s.MiniSeq; seq < s.MaxSeq; seq++ {
 		log, ok := s.msgLogs[seq]
 		if !ok || log.Stage < Prepared {
