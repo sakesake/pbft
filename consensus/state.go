@@ -505,17 +505,20 @@ func (s *StateEngine) prepare2Commit(commit *message.Commit) (err error) {
 	s.Timer.tack()
 	fmt.Printf("======>[prepare2Commit] Node: %d, Consensus status is [%s] seq=%d and timer stop\n", s.NodeID, log.Stage, commit.SequenceID)
 
-	//TODO::should execute request with smallest  sequence no, current committed sequence may not be the smallest one.
-	request, ok := s.cliRecord[log.clientID].Request[commit.SequenceID]
-	if !ok {
-		return fmt.Errorf("no raw request for such seq[%d]", commit.SequenceID)
+	if s.nodeStatus == Serving {
+		//TODO::should execute request with smallest  sequence no, current committed sequence may not be the smallest one.
+		request, ok := s.cliRecord[log.clientID].Request[commit.SequenceID]
+		if !ok {
+			return fmt.Errorf("no raw request for such seq[%d]", commit.SequenceID)
+		}
+		exeParam := &message.RequestRecord{
+			Request:    request,
+			PrePrepare: ppMsg,
+		}
+		//TODO::Check the reply whose sequence is smaller than current sequence.
+		s.nodeChan <- exeParam
 	}
-	exeParam := &message.RequestRecord{
-		Request:    request,
-		PrePrepare: ppMsg,
-	}
-	//TODO::Check the reply whose sequence is smaller than current sequence.
-	s.nodeChan <- exeParam
+
 	return
 }
 

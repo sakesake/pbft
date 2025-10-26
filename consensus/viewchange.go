@@ -131,7 +131,7 @@ func (s *StateEngine) ViewChange() {
 		fmt.Println(err)
 		return
 	}
-	s.CurViewID++
+	s.CurViewID = vc.NewViewID
 	s.msgLogs = make(map[int64]*NormalLog)
 }
 
