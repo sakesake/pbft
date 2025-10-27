@@ -61,7 +61,7 @@ func (s *StateEngine) ResetState(reply *message.Reply) {
 	s.LasExeSeq = reply.SeqID
 
 	if s.CurSequence%CheckPointInterval == 0 || s.lastCP == nil {
-		fmt.Printf("======>[ResetState]Need to create check points(%d)\n", s.CurSequence)
+		fmt.Printf("======>[ResetState] Node: %d Need to create check points(%d)\n", s.NodeID, s.CurSequence)
 		go s.createCheckPoint(s.CurSequence)
 	}
 	s.cliRecord[reply.ClientID].saveReply(reply)
