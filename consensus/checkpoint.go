@@ -98,6 +98,7 @@ func (s *StateEngine) checkingPoint(msg *message.CheckPoint) error {
 		s.checks[msg.SequenceID] = cp
 	}
 	cp.CPMsg[msg.NodeID] = msg
+	fmt.Printf("======>[checkingPoint] Node: %d CPMsg from: %d\n", s.NodeID, msg.NodeID)
 	s.runCheckPoint(msg.SequenceID)
 	return nil
 }
