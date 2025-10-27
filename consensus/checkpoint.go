@@ -98,7 +98,7 @@ func (s *StateEngine) checkingPoint(msg *message.CheckPoint) error {
 		s.checks[msg.SequenceID] = cp
 	}
 	cp.CPMsg[msg.NodeID] = msg
-	fmt.Printf("======>[checkingPoint] Node: %d CPMsg from: %d\n", s.NodeID, msg.NodeID)
+	fmt.Printf("======>[checkingPoint] Node: %d CPMsg added from: %d\n", s.NodeID, msg.NodeID)
 	s.runCheckPoint(msg.SequenceID)
 	return nil
 }
@@ -112,7 +112,7 @@ func (s *StateEngine) runCheckPoint(seq int64) {
 	if len(cp.CPMsg) < 2*message.MaxFaultyNode+1 {
 		fmt.Printf("======>[checkingPoint] Node: %d message counter:[%d]\n", s.NodeID, len(cp.CPMsg))
 		for key := range cp.CPMsg {
-			fmt.Printf("======>[checkingPoint] Node: %d CPMsg from: %d", s.NodeID, key)
+			fmt.Printf("======>[checkingPoint] Node: %d CPMsg from: %d\n", s.NodeID, key)
 		}
 		return
 	}
