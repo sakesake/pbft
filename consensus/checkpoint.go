@@ -77,7 +77,7 @@ func (s *StateEngine) createCheckPoint(sequence int64) {
 
 	cp, ok := s.checks[sequence]
 	if !ok {
-		cp := NewCheckPoint(sequence, s.CurViewID)
+		cp = NewCheckPoint(sequence, s.CurViewID)
 		s.checks[sequence] = cp
 	} else {
 		fmt.Println("TEMP LOG")
