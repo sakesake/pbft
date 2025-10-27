@@ -91,7 +91,7 @@ func (s *StateEngine) createCheckPoint(sequence int64) {
 }
 
 func (s *StateEngine) checkingPoint(msg *message.CheckPoint) error {
-	fmt.Printf("======>[checkingPoint] Node: %d\n", s.NodeID)
+	fmt.Printf("======>[checkingPoint] Node: %d Seq: %d\n", s.NodeID, msg.SequenceID)
 	cp, ok := s.checks[msg.SequenceID]
 	if !ok {
 		cp = NewCheckPoint(msg.SequenceID, s.CurViewID)
