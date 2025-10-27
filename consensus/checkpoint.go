@@ -111,6 +111,9 @@ func (s *StateEngine) runCheckPoint(seq int64) {
 	}
 	if len(cp.CPMsg) < 2*message.MaxFaultyNode+1 {
 		fmt.Printf("======>[checkingPoint] Node: %d message counter:[%d]\n", s.NodeID, len(cp.CPMsg))
+		for key := range cp.CPMsg {
+			fmt.Printf("======>[checkingPoint] Node: %d CPMsg from: %d", s.NodeID, key)
+		}
 		return
 	}
 	if cp.IsStable {
