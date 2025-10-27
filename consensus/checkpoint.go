@@ -138,5 +138,5 @@ func (s *StateEngine) runCheckPoint(seq int64) {
 	s.MiniSeq = cp.Seq
 	s.MaxSeq = s.MiniSeq + CheckPointK
 	s.lastCP = cp
-	fmt.Printf("======>[checkingPoint] Success in Checkpoint forwarding[(%d, %d)]......\n", s.MiniSeq, s.MaxSeq)
+	fmt.Printf("======>[checkingPoint] Node: %d Success in Checkpoint forwarding[(%d, %d)]......\n", s.NodeID, s.MiniSeq, s.MaxSeq)
 }
