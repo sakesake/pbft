@@ -75,10 +75,16 @@ func (s *StateEngine) createCheckPoint(sequence int64) {
 		Digest:     fmt.Sprintf("checkpoint message for [seq(%d)]", sequence),
 	}
 
-	cp := NewCheckPoint(sequence, s.CurViewID)
+	cp, ok := s.checks[sequence]
+	if !ok {
+		cp := NewCheckPoint(sequence, s.CurViewID)
+		s.checks[sequence] = cp
+	} else {
+		fmt.Println("TEMP LOG")
+	}
+
 	cp.Digest = fmt.Sprintf("check point message<%d, %d>", s.NodeID, sequence)
 	cp.CPMsg[s.NodeID] = msg
-	s.checks[sequence] = cp
 
 	fmt.Printf("======>[createCheckPoint] Broadcast check point message<%d, %d>\n", s.NodeID, sequence)
 	consMsg := message.CreateConMsg(message.MTCheckpoint, msg)
