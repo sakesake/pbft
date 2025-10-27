@@ -78,6 +78,7 @@ func (s *StateEngine) createCheckPoint(sequence int64) {
 	cp, ok := s.checks[sequence]
 	if !ok {
 		cp = NewCheckPoint(sequence, s.CurViewID)
+		// TODO: should it be locked?
 		s.checks[sequence] = cp
 	} else {
 		fmt.Println("TEMP LOG")
@@ -101,6 +102,7 @@ func (s *StateEngine) checkingPoint(msg *message.CheckPoint) error {
 	cp, ok := s.checks[msg.SequenceID]
 	if !ok {
 		cp = NewCheckPoint(msg.SequenceID, s.CurViewID)
+		// TODO: should it be locked?
 		s.checks[msg.SequenceID] = cp
 	}
 	cp.CPMsg[msg.NodeID] = msg
