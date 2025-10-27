@@ -160,7 +160,8 @@ func (s *StateEngine) StartConsensus(sig chan interface{}) {
 	for {
 		select {
 		case <-s.Timer.C:
-			s.ViewChange()
+			// TODO: uncomment
+			//s.ViewChange()
 		case conMsg := <-s.MsgChan:
 			switch conMsg.Typ {
 			case message.MTRequest,
@@ -481,7 +482,7 @@ func (s *StateEngine) prepare2Commit(commit *message.Commit) (err error) {
 	log.Commit[commit.NodeID] = commit
 
 	if log.Stage != Prepared {
-		return fmt.Errorf("======>[prepare2Commit] Node: %d, current[seq=%d] state isn't PrePrepared:[%s]\n", s.NodeID, commit.SequenceID, log.Stage)
+		return fmt.Errorf("======>[prepare2Commit] Node: %d, current[seq=%d] state isn't Prepared:[%s]\n", s.NodeID, commit.SequenceID, log.Stage)
 	}
 
 	ppMsg := log.PrePrepare
