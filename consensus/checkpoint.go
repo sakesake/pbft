@@ -89,6 +89,7 @@ func (s *StateEngine) createCheckPoint(sequence int64) {
 }
 
 func (s *StateEngine) checkingPoint(msg *message.CheckPoint) error {
+	fmt.Printf("======>[checkingPoint] Node: %d\n", s.NodeID)
 	cp, ok := s.checks[msg.SequenceID]
 	if !ok {
 		cp = NewCheckPoint(msg.SequenceID, s.CurViewID)
@@ -106,15 +107,15 @@ func (s *StateEngine) runCheckPoint(seq int64) {
 
 	}
 	if len(cp.CPMsg) < 2*message.MaxFaultyNode+1 {
-		fmt.Printf("======>[checkingPoint] message counter:[%d]\n", len(cp.CPMsg))
+		fmt.Printf("======>[checkingPoint] Node: %d message counter:[%d]\n", s.NodeID, len(cp.CPMsg))
 		return
 	}
 	if cp.IsStable {
-		fmt.Printf("======>[checkingPoint] Check Point for [%d] has confirmed\n", cp.Seq)
+		fmt.Printf("======>[checkingPoint] Node: %d Check Point for [%d] has confirmed\n", s.NodeID, cp.Seq)
 		return
 	}
 
-	fmt.Println("======>[checkingPoint] Start to clean the old message data......")
+	fmt.Printf("======>[checkingPoint] Node: %d Start to clean the old message data......\n", s.NodeID)
 	cp.IsStable = true
 	for id, log := range s.msgLogs {
 		if id > cp.Seq {
@@ -123,7 +124,7 @@ func (s *StateEngine) runCheckPoint(seq int64) {
 		log.PrePrepare = nil
 		log.Commit = nil
 		delete(s.msgLogs, id)
-		fmt.Printf("======>[checkingPoint] Delete log message:CPseq=%d  clientID=%s\n", id, log.clientID)
+		fmt.Printf("======>[checkingPoint] Node: %d Delete log message:CPseq=%d  clientID=%s\n", s.NodeID, id, log.clientID)
 	}
 
 	for id, cps := range s.checks {
@@ -132,7 +133,7 @@ func (s *StateEngine) runCheckPoint(seq int64) {
 		}
 		cps.CPMsg = nil
 		delete(s.checks, id)
-		fmt.Printf("======>[checkingPoint] Delete Checkpoint:seq=%d stable=%t\n", id, cps.IsStable)
+		fmt.Printf("======>[checkingPoint] Node: %d Delete Checkpoint:seq=%d stable=%t\n", s.NodeID, id, cps.IsStable)
 	}
 
 	s.MiniSeq = cp.Seq
