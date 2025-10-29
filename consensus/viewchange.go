@@ -199,7 +199,8 @@ func (s *StateEngine) checkViewChange(vc *message.ViewChange) error {
 		ppView := pt.PPMsg.ViewID
 		//prePrimaryID :=  ppView % message.TotalNodeNO
 
-		if seq <= vc.LastCPSeq || seq > vc.LastCPSeq+CheckPointK {
+		// TODO sara: should it be returned to if seq <= vc.LastCPSeq
+		if seq < vc.LastCPSeq || seq > vc.LastCPSeq+CheckPointK {
 			return fmt.Errorf("view change message checking P message faild pre-prepare n=%d,"+
 				" checkpoint h=%d", seq, vc.LastCPSeq)
 		}

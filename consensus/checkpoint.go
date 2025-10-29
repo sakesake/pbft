@@ -132,7 +132,7 @@ func (s *StateEngine) runCheckPoint(seq int64) {
 	fmt.Printf("======>[checkingPoint] Node: %d Start to clean the old message data......\n", s.NodeID)
 	cp.IsStable = true
 	for id, log := range s.msgLogs {
-		// TODO: should it be returned to `if id > cp.Seq {``
+		// TODO sara: should it be returned to `if id > cp.Seq {`?
 		if id >= cp.Seq {
 			continue
 		}

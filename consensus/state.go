@@ -313,7 +313,7 @@ it has request m in its log, it enters the prepare phase by multicasting a PREPA
 replicas; in addition, it adds both the PRE-PREPARE and PREPARE messages to its log.
 */
 func (s *StateEngine) idle2PrePrepare(ppMsg *message.PrePrepare) (err error) {
-	// TODO: check if the next line is needed
+	// TODO sara: check if the next line is needed
 	s.CurSequence = ppMsg.SequenceID
 	fmt.Printf("======>[idle2PrePrepare] Node: %d Current sequence[%d]\n", s.NodeID, ppMsg.SequenceID)
 
