@@ -314,7 +314,7 @@ replicas; in addition, it adds both the PRE-PREPARE and PREPARE messages to its 
 */
 func (s *StateEngine) idle2PrePrepare(ppMsg *message.PrePrepare) (err error) {
 	// TODO: check if the next line is needed
-	s.CurSequence = ppMsg.SequenceID
+	//s.CurSequence = ppMsg.SequenceID
 	fmt.Printf("======>[idle2PrePrepare] Node: %d Current sequence[%d]\n", s.NodeID, ppMsg.SequenceID)
 
 	//TODO:: check signature of of pre-Prepare message

@@ -151,7 +151,7 @@ func (s Set) put(key interface{}) {
 }
 func (s *StateEngine) checkViewChange(vc *message.ViewChange) error {
 	if s.CurViewID > vc.NewViewID {
-		return fmt.Errorf("it's[%d] not for me[%d] view change", vc.NewViewID, s.CurViewID)
+		return fmt.Errorf("it's[%d] not for me[%d] view change\n", vc.NewViewID, s.CurViewID)
 	}
 	if len(vc.CMsg) <= message.MaxFaultyNode {
 		return fmt.Errorf("view message checking C message failed")
@@ -233,7 +233,7 @@ func (s *StateEngine) checkViewChange(vc *message.ViewChange) error {
 		}
 	}
 	if !PMsgIsOk {
-		return fmt.Errorf("view change check p message failed")
+		return fmt.Errorf("view change check p message failed\n")
 	}
 
 	return nil
@@ -242,7 +242,7 @@ func (s *StateEngine) checkViewChange(vc *message.ViewChange) error {
 func (s *StateEngine) procViewChange(vc *message.ViewChange) error {
 	nextPrimaryID := vc.NewViewID % message.TotalNodeNO
 	if s.NodeID != nextPrimaryID {
-		fmt.Printf("im[%d] not the new[%d] primary node\n", s.NodeID, nextPrimaryID)
+		fmt.Printf("I'm[%d] not the new[%d] primary node\n", s.NodeID, nextPrimaryID)
 		return nil
 	}
 	if err := s.checkViewChange(vc); err != nil {
