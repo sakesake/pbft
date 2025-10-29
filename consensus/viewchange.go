@@ -446,6 +446,6 @@ func (s *StateEngine) didChangeView(nv *message.NewView) error {
 	s.updateStateNV(newCP, cpVC)
 	s.cleanRequest()
 
-	fmt.Printf("[didChangeView] Node: %d FINISHED.\n", s.NodeID)
+	fmt.Printf("[didChangeView] Node: %d FINISHED. New view: %d, New curSeq: %d\n", s.NodeID, s.CurViewID, s.CurSequence)
 	return nil
 }
