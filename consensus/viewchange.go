@@ -150,6 +150,7 @@ func (s Set) put(key interface{}) {
 	s[key] = true
 }
 func (s *StateEngine) checkViewChange(vc *message.ViewChange) error {
+	fmt.Printf("[checkViewChange] Node: %d\n", s.NodeID)
 	if s.CurViewID > vc.NewViewID {
 		return fmt.Errorf("it's[%d] not for me[%d] view change\n", vc.NewViewID, s.CurViewID)
 	}
