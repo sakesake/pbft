@@ -76,7 +76,6 @@ func (s *StateEngine) computePMsg() map[int64]*message.PTuple {
 	for seq := s.MiniSeq; seq < s.MaxSeq; seq++ {
 		log, ok := s.msgLogs[seq]
 		if !ok || log.Stage < Prepared {
-			fmt.Printf("[computePMsg] Seq: %d, ok: %v\n", seq, ok)
 			continue
 		}
 
