@@ -164,7 +164,7 @@ func (s *StateEngine) StartConsensus(sig chan interface{}) {
 		select {
 		case <-s.Timer.C:
 			// TODO sara: uncomment
-			//s.ViewChange()
+			s.ViewChange()
 		case conMsg := <-s.MsgChan:
 			switch conMsg.Typ {
 			case message.MTRequest,
