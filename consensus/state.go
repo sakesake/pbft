@@ -238,10 +238,11 @@ func (s *StateEngine) getOrCreateLog(seq int64) *NormalLog {
 }
 
 func (s *StateEngine) InspireConsensus(request *message.Request) error {
-	s.CurSequence++
-	fmt.Printf("======>[InspireConsensus] Node: %d Current sequence (%d)\n", s.NodeID, s.CurSequence)
-	newSeq := s.CurSequence
-	request.SeqID = newSeq
+	//s.CurSequence++
+	//newSeq := s.CurSequence
+	newSeq := request.SeqID
+	fmt.Printf("======>[InspireConsensus] Node: %d Current sequence (%d)\n", s.NodeID, newSeq)
+	//request.SeqID = newSeq
 	client, err := s.checkClientRecord(request)
 	if err != nil || client == nil {
 		return err
