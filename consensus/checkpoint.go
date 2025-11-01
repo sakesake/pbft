@@ -57,6 +57,9 @@ func NewCheckPoint(sq, vi int64) *CheckPoint {
 }
 
 func (s *StateEngine) ResetState(reply *message.Reply) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+
 	//s.msgLogs[reply.SeqID].Stage = Idle
 	s.LasExeSeq = reply.SeqID
 

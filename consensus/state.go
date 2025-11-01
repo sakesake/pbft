@@ -3,6 +3,7 @@ package consensus
 import (
 	"encoding/json"
 	"fmt"
+	"sync"
 	"time"
 
 	"github.com/sakesake/PBFT/message"
@@ -116,6 +117,8 @@ type StateEngine struct {
 	lastCP    *CheckPoint
 	cliRecord map[string]*ClientRecord
 	sCache    *VCCache
+
+	mu sync.Mutex
 }
 
 func InitConsensus(
