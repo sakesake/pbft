@@ -63,9 +63,12 @@ func (s *StateEngine) ResetState(reply *message.Reply) {
 	//s.msgLogs[reply.SeqID].Stage = Idle
 	s.LasExeSeq = reply.SeqID
 
-	if s.CurSequence%CheckPointInterval == 0 || reply.SeqID == 1 {
+	if s.CurSequence%CheckPointInterval == 0 {
 		fmt.Printf("======>[ResetState] Node: %d Need to create check points(%d)\n", s.NodeID, s.CurSequence)
 		go s.createCheckPoint(s.CurSequence)
+	} else if reply.SeqID == 1 {
+		fmt.Printf("======>[ResetState] Node: %d Need to create check points for the first time\n", s.NodeID)
+		go s.createCheckPoint(reply.SeqID)
 	}
 	s.cliRecord[reply.ClientID].saveReply(reply)
 }
