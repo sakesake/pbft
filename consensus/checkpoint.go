@@ -56,18 +56,40 @@ func NewCheckPoint(sq, vi int64) *CheckPoint {
 	return cp
 }
 
-func (s *StateEngine) ResetState(reply *message.Reply) {
+/* func (s *StateEngine) ResetState(reply *message.Reply) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
 	//s.msgLogs[reply.SeqID].Stage = Idle
 	s.LasExeSeq = reply.SeqID
 
-	if s.CurSequence%CheckPointInterval == 0 || s.CurSequence == 3 {
+	if s.CurSequence%CheckPointInterval == 0 || s.lastCP == nil {
 		fmt.Printf("======>[ResetState] Node: %d Need to create check points(%d)\n", s.NodeID, s.CurSequence)
 		go s.createCheckPoint(s.CurSequence)
 	} else {
 		fmt.Printf("======>[ResetState] Node: %d NO NEED to create check points(%d)\n", s.NodeID, s.CurSequence)
+	}
+
+	s.cliRecord[reply.ClientID].saveReply(reply)
+} */
+
+func (s *StateEngine) ResetState(reply *message.Reply) {
+	s.mu.Lock()
+	s.LasExeSeq = reply.SeqID
+	seq := s.CurSequence
+	shouldCheckpoint := (seq%CheckPointInterval == 0 || s.lastCP == nil)
+	s.mu.Unlock()
+
+	if shouldCheckpoint {
+		fmt.Printf("======>[ResetState] Node: %d creating checkpoint at seq=%d\n", s.NodeID, seq)
+		// Run checkpoint creation asynchronously, but not under lock
+		go func(seq int64) {
+			s.mu.Lock()
+			defer s.mu.Unlock()
+			s.createCheckPoint(seq)
+		}(seq)
+	} else {
+		fmt.Printf("======>[ResetState] Node: %d no checkpoint needed at seq=%d\n", s.NodeID, seq)
 	}
 
 	s.cliRecord[reply.ClientID].saveReply(reply)
