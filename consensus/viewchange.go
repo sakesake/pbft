@@ -425,14 +425,14 @@ func (s *StateEngine) didChangeView(nv *message.NewView) error {
 		return fmt.Errorf("new view checking N message faliled")
 	}
 
-	fmt.Printf("[didChangeView] Node: %d idle2PrePrepare O.\n", s.NodeID)
+	fmt.Printf("[didChangeView] Node: %d idle2PrePrepare O with len: %d\n", s.NodeID, len(O))
 	for _, ppMsg := range O {
 		if e := s.idle2PrePrepare(ppMsg); e != nil {
 			return e
 		}
 	}
 
-	fmt.Printf("[didChangeView] Node: %d idle2PrePrepare N.\n", s.NodeID)
+	fmt.Printf("[didChangeView] Node: %d idle2PrePrepare N with len: %d.\n", s.NodeID, len(N))
 	for _, ppMsg := range N {
 		if e := s.idle2PrePrepare(ppMsg); e != nil {
 			return e
