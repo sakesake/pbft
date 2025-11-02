@@ -517,6 +517,7 @@ func (s *StateEngine) prepare2Commit(commit *message.Commit) (err error) {
 		_, ok := s.cliRecord[log.clientID]
 		if !ok {
 			fmt.Printf("======>[prepare2Commit] Node: %d,no cli record for client id [%s], seq: %d", s.NodeID, log.clientID, s.CurSequence)
+			return
 		}
 
 		request, ok := s.cliRecord[log.clientID].Request[commit.SequenceID]
