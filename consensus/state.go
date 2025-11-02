@@ -516,7 +516,7 @@ func (s *StateEngine) prepare2Commit(commit *message.Commit) (err error) {
 		//TODO::should execute request with smallest  sequence no, current committed sequence may not be the smallest one.
 		_, ok := s.cliRecord[log.clientID]
 		if !ok {
-			return fmt.Errorf("======>[prepare2Commit] Node: %d,no cli record for client id [%d]", s.NodeID, log.clientID)
+			fmt.Printf("======>[prepare2Commit] Node: %d,no cli record for client id [%d]", s.NodeID, log.clientID)
 		}
 
 		request, ok := s.cliRecord[log.clientID].Request[commit.SequenceID]
