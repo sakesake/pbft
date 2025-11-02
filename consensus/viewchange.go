@@ -446,7 +446,9 @@ func (s *StateEngine) didChangeView(nv *message.NewView) error {
 	s.updateStateNV(newCP, cpVC)
 	s.cleanRequest()
 
-	s.nodeStatus = Serving
+	if len(N) == 0 && len(O) == 0 {
+		s.nodeStatus = Serving
+	}
 
 	fmt.Printf("[didChangeView] Node: %d FINISHED. New view: %d, New curSeq: %d\n", s.NodeID, s.CurViewID, s.CurSequence)
 	return nil
